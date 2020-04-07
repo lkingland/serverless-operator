@@ -6,7 +6,6 @@ import (
 	"strings"
 	"testing"
 
-	servingversioned "github.com/knative/serving/pkg/client/clientset/versioned"
 	routev1 "github.com/openshift/client-go/route/clientset/versioned/typed/route/v1"
 	"github.com/operator-framework/operator-lifecycle-manager/pkg/api/client"
 	olmversioned "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
@@ -17,6 +16,7 @@ import (
 	aggregator "k8s.io/kube-aggregator/pkg/client/clientset_generated/clientset"
 	servingoperatorversioned "knative.dev/serving-operator/pkg/client/clientset/versioned"
 	servingoperatorv1alpha1 "knative.dev/serving-operator/pkg/client/clientset/versioned/typed/serving/v1alpha1"
+	servingversioned "knative.dev/serving/pkg/client/clientset/versioned"
 )
 
 // Context holds objects related to test execution

@@ -88,6 +88,13 @@ function remove_temporary_gopath {
   fi
 }
 
+function pivot_to_knative_serving {
+  logger.info "Pivoting to Knative Serving Dir"
+  kn_serving_rootdir="$(pwd)/test/vendor/knative.dev/serving/"
+  logger.info "New path: $kn_serving_rootdir"
+  export KNATIVE_SERVING_HOME="$kn_serving_rootdir"
+}
+
 function checkout_knative_serving {
   local knative_version=$1
   # Setup a temporary GOPATH to safely check out the repository without breaking other things.
@@ -121,7 +128,7 @@ function run_knative_serving_e2e_and_conformance_tests {
   local knative_version=$1
 
   if [[ -z ${KNATIVE_SERVING_HOME+x} ]]; then
-    checkout_knative_serving "$knative_version"
+    pivot_to_knative_serving "$knative_version"
   fi
   cd "$KNATIVE_SERVING_HOME" || return $?
 
@@ -157,7 +164,7 @@ function run_knative_serving_rolling_upgrade_tests {
   rootdir="$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")"
 
   if [[ -z ${KNATIVE_SERVING_HOME+x} ]]; then
-    checkout_knative_serving "$knative_version"
+    pivot_to_knative_serving "$knative_version"
   fi
   cd "$KNATIVE_SERVING_HOME" || return $?
 

@@ -3,7 +3,6 @@ package test
 import (
 	"strings"
 
-	servingv1beta1 "github.com/knative/serving/pkg/apis/serving/v1beta1"
 	routev1 "github.com/openshift/api/route/v1"
 	"github.com/pkg/errors"
 	appsv1 "k8s.io/api/apps/v1"
@@ -12,18 +11,19 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"k8s.io/apimachinery/pkg/util/wait"
+	servingv1 "knative.dev/serving/pkg/apis/serving/v1"
 )
 
-func Service(name, namespace, image string) *servingv1beta1.Service {
-	s := &servingv1beta1.Service{
+func Service(name, namespace, image string) *servingv1.Service {
+	s := &servingv1.Service{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      name,
 			Namespace: namespace,
 		},
-		Spec: servingv1beta1.ServiceSpec{
-			ConfigurationSpec: servingv1beta1.ConfigurationSpec{
-				Template: servingv1beta1.RevisionTemplateSpec{
-					Spec: servingv1beta1.RevisionSpec{
+		Spec: servingv1.ServiceSpec{
+			ConfigurationSpec: servingv1.ConfigurationSpec{
+				Template: servingv1.RevisionTemplateSpec{
+					Spec: servingv1.RevisionSpec{
 						PodSpec: corev1.PodSpec{
 							Containers: []corev1.Container{{
 								Image: image,
@@ -42,7 +42,7 @@ func Service(name, namespace, image string) *servingv1beta1.Service {
 	return s
 }
 
-func WithServiceReady(ctx *Context, name, namespace, image string) (*servingv1beta1.Service, error) {
+func WithServiceReady(ctx *Context, name, namespace, image string) (*servingv1.Service, error) {
 	service, err := CreateService(ctx, name, namespace, image)
 	if err != nil {
 		return nil, err
@@ -54,22 +54,22 @@ func WithServiceReady(ctx *Context, name, namespace, image string) (*servingv1be
 	return service, nil
 }
 
-func CreateService(ctx *Context, name, namespace, image string) (*servingv1beta1.Service, error) {
-	service, err := ctx.Clients.Serving.ServingV1beta1().Services(namespace).Create(Service(name, namespace, image))
+func CreateService(ctx *Context, name, namespace, image string) (*servingv1.Service, error) {
+	service, err := ctx.Clients.Serving.ServingV1().Services(namespace).Create(Service(name, namespace, image))
 	if err != nil {
 		return nil, err
 	}
 	ctx.AddToCleanup(func() error {
-		return ctx.Clients.Serving.ServingV1beta1().Services(namespace).Delete(service.Name, &metav1.DeleteOptions{})
+		return ctx.Clients.Serving.ServingV1().Services(namespace).Delete(service.Name, &metav1.DeleteOptions{})
 	})
 	return service, nil
 }
 
-func WaitForServiceState(ctx *Context, name, namespace string, inState func(s *servingv1beta1.Service, err error) (bool, error)) (*servingv1beta1.Service, error) {
-	var lastState *servingv1beta1.Service
+func WaitForServiceState(ctx *Context, name, namespace string, inState func(s *servingv1.Service, err error) (bool, error)) (*servingv1.Service, error) {
+	var lastState *servingv1.Service
 	var err error
 	waitErr := wait.PollImmediate(Interval, Timeout, func() (bool, error) {
-		lastState, err = ctx.Clients.Serving.ServingV1beta1().Services(namespace).Get(name, metav1.GetOptions{})
+		lastState, err = ctx.Clients.Serving.ServingV1().Services(namespace).Get(name, metav1.GetOptions{})
 		return inState(lastState, err)
 	})
 
@@ -101,7 +101,7 @@ func WaitForOperatorDepsDeleted(ctx *Context) error {
 	return nil
 }
 
-func IsServiceReady(s *servingv1beta1.Service, err error) (bool, error) {
+func IsServiceReady(s *servingv1.Service, err error) (bool, error) {
 	return s.Generation == s.Status.ObservedGeneration && s.Status.IsReady() && s.Status.URL != nil && s.Status.URL.Host != "", err
 }
 
@@ -180,7 +180,7 @@ func CreateKubeService(ctx *Context, name, namespace string) (*corev1.Service, e
 	}
 
 	ctx.AddToCleanup(func() error {
-		return ctx.Clients.Serving.ServingV1beta1().Services(namespace).Delete(svc.Name, &metav1.DeleteOptions{})
+		return ctx.Clients.Serving.ServingV1().Services(namespace).Delete(svc.Name, &metav1.DeleteOptions{})
 	})
 
 	return svc, nil

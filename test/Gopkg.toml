@@ -1,7 +1,9 @@
 # Force dep to vendor the code generators, which aren't imported just used at dev time.
 required = [
-  "github.com/knative/test-infra/scripts",
-  "github.com/knative/test-infra/tools/dep-collector",
+  "knative.dev/test-infra/scripts",
+  "knative.dev/test-infra/tools/dep-collector",
+  # Force vendoring of the OpenShift KnativeServing tests
+  "knative.dev/serving/test",
 ]
 
 [prune]
@@ -10,8 +12,16 @@ required = [
   unused-packages = true
 
 [[prune.project]]
-  name = "github.com/knative/test-infra"
+  name = "knative.dev/test-infra"
   non-go = false
+
+
+# Override OpenShift KnativeServing settings to not prune.
+[[prune.project]]
+  name = "knative.dev/serving"
+  go-tests = false
+  non-go = false
+  unused-packages = false
 
 [[override]]
   name = "k8s.io/api"
@@ -39,11 +49,13 @@ required = [
 
 [[constraint]]
   branch = "master"
-  name = "github.com/knative/test-infra"
+  name = "knative.dev/test-infra"
 
-[[constraint]]
-  branch = "release-0.7"
-  name = "github.com/knative/serving"
+# The following constraint causes incompatible versions, disallowing
+# OpenShift Knative Serving being vendored.
+# [[constraint]]
+#   branch = "release-0.7"
+#  name = "github.com/knative/serving"
 
 [[constraint]]
   branch = "master"
@@ -56,3 +68,16 @@ required = [
 [[ constraint ]]
   name = "github.com/openshift/client-go"
   version = "v3.9.0"
+
+# Check out the specifically supported OpenShift Knative Serving
+# branch for testing
+[[ constraint ]]
+  name = "knative.dev/serving"
+  source = "github.com/openshift/knative-serving"
+  branch = "release-v0.12.1"
+
+# Without explicitly using v0.12, the test package will fail to build with:
+# knative.dev/pkg/metrics/stackdriver_exporter.go:70:3: unknown field 'GetMonitoredResource' in struct literal of type stackdriver.Options
+[[override]]
+  name = "knative.dev/pkg"
+  branch = "release-0.12"
