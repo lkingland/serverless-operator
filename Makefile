@@ -15,6 +15,12 @@ install-previous:
 teardown:
 	./hack/teardown.sh
 
+# vendors dependencies which are not able to be automatically
+# pulled in via dep (for instance: Knative Serving for running
+# E2E and upgrade tests, which has no compile-time references).
+vendor:
+	./hack/vendor.sh
+
 # Test targets for CI operator
 test-unit:
 	go test ./knative-operator/...
