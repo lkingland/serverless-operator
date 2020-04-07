@@ -1,0 +1,70 @@
+module github.com/openshift-knative/serverless-operator/test
+
+go 1.13
+
+require (
+	github.com/BurntSushi/toml v0.3.1
+	github.com/PuerkitoBio/purell v1.1.1
+	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578
+	github.com/davecgh/go-spew v1.1.1
+	github.com/emicklei/go-restful v2.10.0+incompatible
+	github.com/evanphx/json-patch v4.5.0+incompatible
+	github.com/go-openapi/jsonpointer v0.19.3
+	github.com/go-openapi/jsonreference v0.19.3
+	github.com/go-openapi/spec v0.19.3
+	github.com/go-openapi/swag v0.19.5
+	github.com/gogo/protobuf v1.3.0
+	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+	github.com/golang/groupcache v0.0.0-20190702054246-869f871628b6
+	github.com/golang/protobuf v1.3.2
+	github.com/google/go-cmp v0.3.0
+	github.com/google/go-containerregistry v0.0.0-20190619182234-abf9ef06abd9
+	github.com/google/gofuzz v1.0.0
+	github.com/google/licenseclassifier v0.0.0-20190711054124-c3068f13fcc3
+	github.com/googleapis/gnostic v0.3.1
+	github.com/hashicorp/golang-lru v0.5.3
+	github.com/imdario/mergo v0.3.7
+	github.com/json-iterator/go v1.1.7
+	github.com/knative/pkg v0.0.0-20190624141606-d82505e6c5b4
+	github.com/knative/serving v0.7.1
+	github.com/knative/test-infra v0.0.0-20190913000234-ca04b8453a87
+	github.com/konsorten/go-windows-terminal-sequences v1.0.2
+	github.com/mailru/easyjson v0.7.0
+	github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a
+	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742
+	github.com/openshift/client-go v3.9.0+incompatible
+	github.com/openzipkin/zipkin-go v0.2.2
+	github.com/operator-framework/operator-lifecycle-manager v0.0.0-20190913022640-2760276f7858
+	github.com/pkg/errors v0.8.1
+	github.com/sergi/go-diff v1.0.0
+	github.com/sirupsen/logrus v1.4.2
+	github.com/spf13/pflag v1.0.3
+	go.opencensus.io v0.22.2
+	go.uber.org/atomic v1.5.0
+	go.uber.org/multierr v1.4.0
+	go.uber.org/tools v0.0.0-20190618225709-2cfd321de3ee
+	go.uber.org/zap v1.13.0
+	golang.org/x/crypto v0.0.0-20190911031432-227b76d455e7
+	golang.org/x/lint v0.0.0-20190930215403-16217165b5de
+	golang.org/x/net v0.0.0-20190912160710-24e19bdeb0f2
+	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
+	golang.org/x/sys v0.0.0-20190912141932-bc967efca4b8
+	golang.org/x/text v0.3.2
+	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4
+	golang.org/x/tools v0.0.0-20191114222411-4191b8cbba09
+	google.golang.org/appengine v1.6.2
+	gopkg.in/inf.v0 v0.9.1
+	gopkg.in/yaml.v2 v2.2.2
+	honnef.co/go/tools v0.0.1-2019.2.3
+	k8s.io/api v0.0.0-20190819141258-3544db3b9e44
+	k8s.io/apimachinery v0.0.0-20190817020851-f2f3a405f61d
+	k8s.io/client-go v0.0.0-20190819141724-e14f31a72a77
+	k8s.io/klog v0.4.0
+	k8s.io/kube-aggregator v0.0.0-20190819142756-13daafd3604f
+	k8s.io/kube-openapi v0.0.0-20190816220812-743ec37842bf
+	k8s.io/utils v0.0.0-20200109141947-94aeca20bf09
+	knative.dev/pkg v0.0.0-20190912234432-34157973944a
+	knative.dev/serving-operator v0.11.1
+	sigs.k8s.io/yaml v1.1.0
+)

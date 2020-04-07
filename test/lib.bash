@@ -144,17 +144,15 @@ function run_knative_serving_rolling_upgrade_tests {
   # Save the rootdir before changing dir
   rootdir="$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")"
 
-  if [[ -z ${KNATIVE_SERVING_HOME+x} ]]; then
-    checkout_knative_serving "$knative_version"
-  fi
-  cd "$KNATIVE_SERVING_HOME" || return $?
+  cd "knative-serving"
 
   prepare_knative_serving_tests || return $?
 
   local failed=0
   image_template="registry.svc.ci.openshift.org/openshift/knative-${knative_version}:knative-serving-test-{{.Name}}"
 
-  go_test_e2e -tags=preupgrade -timeout=20m ./test/upgrade \
+  export GO111MODULE=on
+  go_test_e2e -mod vendor -tags=preupgrade -timeout=20m ./test/upgrade \
     --imagetemplate "$image_template" \
     --kubeconfig "$KUBECONFIG" \
     --resolvabledomain || return 1
@@ -228,8 +226,6 @@ function run_knative_serving_rolling_upgrade_tests {
     --resolvabledomain || return 1
 
   oc delete ksvc pizzaplanet-upgrade-service scale-to-zero-upgrade-service upgrade-probe -n serving-tests
-
-  remove_temporary_gopath
 
   return 0
   )
@@ -388,3 +384,4 @@ function delete_users {
   done < "users.htpasswd"
   rm -v users.htpasswd
 }
+
